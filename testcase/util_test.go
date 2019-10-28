@@ -9,6 +9,6 @@ import (
 func TestTime(t *testing.T) {
 	fmt.Println(time.Now().UTC().String())
 	before := time.Now()
-	time.Sleep(3*time.Second)
+	time.Sleep(3 * time.Second)
 	fmt.Println(time.Now().Sub(before).Seconds())
 }
