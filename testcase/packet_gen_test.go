@@ -48,12 +48,13 @@ func TestGenUdp(t *testing.T) {
 	//Version
 	ipfixh[0], ipfixh[1] = 0x00, 0x09
 	//Count
-	ipfixh[2], ipfixh[3] = port2Hex(3)
+	ipfixh[2], ipfixh[3] = port2Hex(4)
 
 	//System up time
 	ipfixh[4],ipfixh[5],ipfixh[6],ipfixh[7] = 0x00,0x00,0x00,0x12
 	unixTime := IntToBytes(time.Now().Unix())
 	// UNIX seconds
+	fmt.Println("Unix len:",len(unixTime))
 	ipfixh[8],ipfixh[9],ipfixh[10],ipfixh[11] = unixTime[4],unixTime[5],unixTime[6],unixTime[7]
 	// package Sequence
 	ipfixh[12],ipfixh[13],ipfixh[14],ipfixh[15] = 0x00,0x00,0x00,0x01
@@ -61,12 +62,12 @@ func TestGenUdp(t *testing.T) {
 	ipfixh[16],ipfixh[17],ipfixh[18],ipfixh[19] = 0x00,0x00,0x00,0x00
 
 	//FlowFlowSet
-	flowSet := make([]byte,16)
+	flowSet := make([]byte,24)
 	//flowSet ID
 	flowSet[0],flowSet[1] = 0x00,0x00
 	//length
-	flowSet[2],flowSet[3] = port2Hex(16)
-	//template ID
+	flowSet[2],flowSet[3] = port2Hex(24)
+	//template ID 	
 	flowSet[4],flowSet[5] = port2Hex(257)
 	//Field count
 	flowSet[6],flowSet[7] = 0x00,0x02
@@ -78,6 +79,15 @@ func TestGenUdp(t *testing.T) {
 	flowSet[12],flowSet[13] = port2Hex(12)
 	//Field 2 type Length,byte
 	flowSet[14],flowSet[15] = 0x00,0x04
+	//template2 ID
+	flowSet[16],flowSet[17] = port2Hex(258)
+	//Field count
+	flowSet[18],flowSet[19] = 0x00,0x01
+	//Field 3 Type
+	flowSet[20],flowSet[21] = port2Hex(12)
+	//Field 4 type Length,byte
+	flowSet[22],flowSet[23] = 0x00,0x04
+
 
 	//option flow set
 	optionFlowSet := make([]byte,4)
@@ -88,7 +98,7 @@ func TestGenUdp(t *testing.T) {
 	
 
 	//Data Flow Set
-	dataFlowSet := make([]byte,12)
+	dataFlowSet := make([]byte,20)
 	//data flow set id
 	dataFlowSet[0],dataFlowSet[1] = port2Hex(257)
 	//data flow set length
@@ -97,6 +107,12 @@ func TestGenUdp(t *testing.T) {
 	dataFlowSet[4],dataFlowSet[5],dataFlowSet[6],dataFlowSet[7] = src[12], src[13], src[14], src[15]
 	//Field 2 value
 	dataFlowSet[8],dataFlowSet[9],dataFlowSet[10],dataFlowSet[11] = dst[12], dst[13], dst[14], dst[15]
+	//data flow set id
+	dataFlowSet[12],dataFlowSet[13] = port2Hex(258)
+	//data flow set length
+	dataFlowSet[14],dataFlowSet[15] = port2Hex(8)
+	//Field 1 value
+	dataFlowSet[16],dataFlowSet[17],dataFlowSet[18],dataFlowSet[19] = dst[12], dst[13], dst[14], dst[15]
 
 	buff := append(ipfixh,append(flowSet,append(optionFlowSet,dataFlowSet...)...)...)
 

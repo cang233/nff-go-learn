@@ -3,7 +3,7 @@ package ipfix
 import "net"
 
 //GenerateUDPHeader 生成udp报文头
-func GenerateUDPHeader(srcIP, dstIP net.IP, srcPort, dstPort int,data []byte) *[]byte {
+func GenerateUDPHeader(srcIP, dstIP net.IP, srcPort, dstPort int,data []byte) []byte {
 	//填充udp首部
 	//udp伪首部
 	udph := make([]byte, 20)
@@ -28,5 +28,5 @@ func GenerateUDPHeader(srcIP, dstIP net.IP, srcPort, dstPort int,data []byte) *[
 	check := checkSum(append(udph, data...))
 	udph[18], udph[19] = byte(check>>8&255), byte(check&255)
 
-	return &udph
+	return udph
 }
