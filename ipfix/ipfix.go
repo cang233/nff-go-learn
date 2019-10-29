@@ -71,7 +71,7 @@ type Field struct {
 	Value []byte //Field Value
 }
 
-//Init 初始化一些ipfix报文中的字段
+//Init 新建IPFIX对象，初始化一些ipfix报文中的字段并返回
 func Init() *IPFIX {
 	return &IPFIX{
 		Hdr: &Header{
@@ -107,7 +107,7 @@ func (ipx *IPFIX) AddOptionTemplate(optionTemplate OptionTemplate) {
 	ipx.Hdr.Count++ //+flow数量
 }
 
-//Fill 完善剩余字段，生成最终IPFIX报文
+//Fill 完善剩余字段，生成最终IPFIX对象 //TODO
 func (ipx *IPFIX) Fill() {
 }
 
